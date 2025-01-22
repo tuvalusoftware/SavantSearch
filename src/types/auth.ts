@@ -9,6 +9,7 @@ export type AuthResponse = User & {
 export type LoginPayload<E = string, P = string> = {
     email: E;
     password: P;
+    referralCode?: string;
 };
 
 export type RegisterPayload = {

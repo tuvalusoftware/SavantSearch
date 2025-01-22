@@ -1,5 +1,3 @@
-import { Optional } from '@/types/common';
-
 export const colorMapper = (error?: string): string => {
     if (error === '') {
         return '#006b0c';

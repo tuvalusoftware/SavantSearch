@@ -1,6 +1,3 @@
-import { clsx, type ClassValue } from 'clsx';
-import { twMerge } from 'tailwind-merge';
-
 export class ClassNameMode {
     static button = (...inputs: string[]) => {
         return `text-button dark:text-button-dark ${inputs.join(' ')}`;

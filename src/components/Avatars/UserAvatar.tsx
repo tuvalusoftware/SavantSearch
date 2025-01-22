@@ -19,7 +19,7 @@ export default function UserAvatar({
                 alt={alt}
                 width={40}
                 height={40}
-                className="rounded-full"
+                className="rounded-full cursor-pointer"
             />
         </div>
     );

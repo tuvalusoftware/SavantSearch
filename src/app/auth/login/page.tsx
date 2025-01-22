@@ -8,6 +8,7 @@ import { CustomIconButton } from '@/components/Buttons/CustomIconButton';
 import { CustomFormInput } from '@/components/Inputs/CustomFormInput';
 import { useLoginViewModel } from '@/hooks/view-models/auth/useLoginViewModel';
 import { colorMapper } from '@/utils/colors';
+import { motion } from 'framer-motion';
 import {
     ArrowRight,
     AtSign,
@@ -19,7 +20,8 @@ import {
 import Image from 'next/image';
 
 export default function LoginPage() {
-    const { register, formErrors, handleSubmit, onLogin } = useLoginViewModel();
+    const { register, formErrors, handleSubmit, onLogin, loading } =
+        useLoginViewModel();
     return (
         <div className={'grid grid-cols-12 gap-4 p-10 h-full justify-between'}>
             <div className="col-span-1">
@@ -68,24 +70,27 @@ export default function LoginPage() {
                     />
                     <CustomFormInput
                         prefixIcon={<Webcam width={20} />}
-                        register={register('password')}
+                        register={register('referralCode')}
                         type="text"
                         name="referral-code"
                         id="referral-code"
                         placeholder="Referral Code"
                     />
 
-                    <CustomIconButton
-                        type="submit"
-                        className="hover:bg-hover"
-                        trailingIcon={
-                            <div className="p-2 rounded-xl bg-[#FFFFFF80] transition-all duration-300 hover:translate-x-2">
-                                <ArrowRight size={20} />
-                            </div>
-                        }
-                    >
-                        <p className="text-sm font-orbitron">Continue</p>
-                    </CustomIconButton>
+                    <motion.button whileTap={{ scale: 0.9 }}>
+                        <CustomIconButton
+                            type="submit"
+                            loading={loading}
+                            className="hover:bg-hover w-full"
+                            trailingIcon={
+                                <div className=" p-2 rounded-xl bg-[#FFFFFF80] transition-all duration-300 hover:translate-x-2">
+                                    <ArrowRight size={20} />
+                                </div>
+                            }
+                        >
+                            <p className="text-sm font-orbitron">Continue</p>
+                        </CustomIconButton>
+                    </motion.button>
                     <SocialLogin />
                 </form>
 
@@ -95,27 +100,45 @@ export default function LoginPage() {
                 </div>
             </div>
             <div className="col-span-7 w-full">
-                <div className="relative w-full">
-                    <div className="cursor-pointer absolute right-0 bg-white rounded-full p-4">
+                <div className="relative w-full ">
+                    <div className="cursor-pointer absolute right-0 bg-white hover:bg-slate-200 rounded-full p-4">
                         <Menu color="black" />
                     </div>
-                    <div className="flex justify-end">
+                    <div className="flex justify-end ">
                         <Image
                             src={loginBannerBg}
-                            className="w-full h-[calc(100vh-2rem)] md:h-[calc(100vh-5rem)]"
+                            className="w-5/6 h-[calc(100vh-2rem)] md:h-[calc(100vh-5rem)]"
                             alt="Background"
+                            loading="eager"
                         />
                     </div>
-                    <Image
-                        src={loginBanner}
-                        className="absolute top-0 left-[60%] -translate-x-2/3 max-w-[650px] xl:max-w-[750px] h-[80vh] md:left-[55%] md:-translate-x-1/2 lg:left-[55%] lg:-translate-x-1/2 xl:left-[60%] xl:-translate-x-2/3"
-                        alt="Banner"
-                    />
-                    <Image
-                        src={loginBannerBall}
-                        alt="Ball"
-                        className="absolute top-2/3 left-3/4 transform -translate-x-2/4 -translate-y-1/2 lg:left-2/4 lg:-translate-x-2/4 max-w-[200px] max-h-[200px]"
-                    />
+                    <motion.div
+                        initial={{ opacity: 0, y: -50 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5 }}
+                        className="absolute top-0 left-[65%] -translate-x-2/3 max-w-[450px] xl:max-w-[600px] h-[90vh] md:left-[60%] md:-translate-x-1/2 lg:left-[60%] lg:-translate-x-1/2 xl:left-[70%] xl:-translate-x-2/3"
+                    >
+                        <Image
+                            src={loginBanner}
+                            alt="Banner"
+                            loading="eager"
+                            className="absolute top-0 left-[65%] -translate-x-2/3 max-w-[450px] xl:max-w-[600px] h-[90vh] md:left-[60%] md:-translate-x-1/2 lg:left-[60%] lg:-translate-x-1/2 xl:left-[70%] xl:-translate-x-2/3"
+                        />
+                    </motion.div>
+
+                    <motion.div
+                        initial={{ opacity: 0, y: 50 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="absolute top-[75%] left-3/4 transform -translate-x-3/4 -translate-y-1/2 lg:left-3/4 lg:-translate-x-3/4 max-w-[200px] max-h-[200px] hover:scale-105 transition-all duration-300"
+                    >
+                        <Image
+                            src={loginBannerBall}
+                            alt="Ball"
+                            className="top-[75%] left-3/4 transform -translate-x-3/4 -translate-y-1/2 lg:left-3/4 lg:-translate-x-3/4 max-w-[200px] max-h-[200px] transition-all duration-300 hover:rotate-180"
+                            loading="eager"
+                        />
+                    </motion.div>
                 </div>
             </div>
         </div>

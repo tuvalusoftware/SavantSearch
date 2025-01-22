@@ -14,7 +14,7 @@ export function AuthSideBar({ className, ...props }: SidebarProps) {
             )}
             {...props}
         >
-            <div className="w-12 h-12 bg-black rounded-full flex items-center justify-center mb-8">
+            <div className="w-12 h-12 bg-black rounded-full flex items-center justify-center mb-8 cursor-pointer">
                 <IcNote />
             </div>
             <div className="flex flex-col items-center gap-8">

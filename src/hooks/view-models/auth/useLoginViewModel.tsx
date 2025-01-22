@@ -7,6 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useToast } from '@/hooks/shared/useToast';
 import { loginValidationSchema } from '@/schema/auth';
 import { LoginPayload } from '@/types/auth';
+import { Optional } from '@/types/common';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { BaseSyntheticEvent, useEffect, useState } from 'react';
@@ -17,20 +18,20 @@ import {
     UseFormHandleSubmit,
     UseFormRegister
 } from 'react-hook-form';
-import { Optional } from '@/types/common';
 // type Props = {};
 export type UseLoginViewModelValue<T extends FieldValues> = {
     onLogin: SubmitHandler<T>;
     register: UseFormRegister<T>;
     handleSubmit: UseFormHandleSubmit<T>;
     formErrors: LoginPayload<Optional<string>>;
+    loading: boolean;
 };
 
 export const useLoginViewModel = (): UseLoginViewModelValue<LoginPayload> => {
     const {
             register,
             handleSubmit,
-            formState: { errors }
+            formState: { errors, isSubmitting: loading }
         } = useForm<LoginPayload>({
             resolver: zodResolver(loginValidationSchema)
         }),
@@ -42,7 +43,6 @@ export const useLoginViewModel = (): UseLoginViewModelValue<LoginPayload> => {
 
     const router = useRouter();
 
-    console.log({ errors });
     useEffect(() => {
         setFormErrors(
             Object.keys(formErrors).reduce(
@@ -53,6 +53,12 @@ export const useLoginViewModel = (): UseLoginViewModelValue<LoginPayload> => {
                 { ...formErrors }
             )
         );
+        if (formErrors.email || formErrors.password) {
+            toast({
+                variant: 'destructive',
+                title: formErrors.email || formErrors.password
+            });
+        }
     }, [errors]);
 
     const onSubmit: SubmitHandler<LoginPayload> = async (
@@ -61,10 +67,9 @@ export const useLoginViewModel = (): UseLoginViewModelValue<LoginPayload> => {
     ) => {
         e?.preventDefault();
 
-        console.log(data);
-
         const res = await signIn('credentials', {
             ...data,
+            mockup: true,
             redirect: false
         });
 
@@ -82,6 +87,7 @@ export const useLoginViewModel = (): UseLoginViewModelValue<LoginPayload> => {
         onLogin: onSubmit,
         handleSubmit,
         register,
+        loading,
         formErrors
     };
 };

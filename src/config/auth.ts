@@ -29,7 +29,6 @@ async function login(credentials: LoginPayload): Promise<AuthResponse> {
         throw new Error('Something went wrong.');
     }
 }
-
 export const nextAuthOptions: NextAuthOptions = {
     pages: {
         error: '/en/auth/error'
@@ -49,7 +48,18 @@ export const nextAuthOptions: NextAuthOptions = {
                     placeholder: '******'
                 }
             },
-            async authorize(credentials): Promise<any> {
+            async authorize(credentials: any): Promise<any> {
+                if (credentials?.mockup === true) {
+                    return {
+                        user: {
+                            id: 'mockUser',
+                            name: 'Mock User',
+                            email: credentials.email
+                        },
+                        accessToken: 'sample_access_token',
+                        refreshToken: 'sample_refresh_token'
+                    };
+                }
                 try {
                     return login(credentials as LoginPayload);
                 } catch (e) {

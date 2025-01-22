@@ -9,7 +9,7 @@ const authErrorMessages = {
 
 export const loginValidationSchema = z.object({
     email: z.string().email(authErrorMessages.email),
-    password: z.string()
+    password: z.string().min(6, authErrorMessages.password.min)
 });
 
 export const registerValidationSchema = z
