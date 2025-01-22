@@ -48,7 +48,7 @@ jobs:
                       docker login -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }} ghcr.io
                       cd savant-search
                       docker compose up -d 
-                      docker image prune -f
+                      docker image prune -af
 
                       MESSAGE="Savant Search: [${{ github.ref_name }}][${{ inputs.version }}] - Deployment successful."
                       curl -s -X POST "https://api.telegram.org/bot${{ vars.TELEGRAM_BOT_TOKEN }}/sendMessage" \
